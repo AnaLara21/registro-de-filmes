@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro de Filmes</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #e8e4ff, #d9edff);
+            margin: 0;
+            padding: 30px 15px;
+            color: #292544;
+        }
+
+        .container {
+            max-width: 550px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 18px;
+            box-shadow: 0 8px 25px rgba(48, 38, 100, 0.15);
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+            margin-bottom: 20px;
+            padding: 12px;
+            border: 1px solid #d8d2f0;
+            border-radius: 9px;
+            font-size: 15px;
+            background-color: #faf9ff;
+            color: #292544;
+          }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: #7964d8;
+            box-shadow: 0 0 0 3px rgba(121, 100, 216, 0.15);
+          }
+
+        .opcoes-radio {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .opcoes-radio label {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            font-weight: normal;
+            cursor: pointer;
+        }
+
+        .opcoes-radio input[type="radio"] {
+            display: inline;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+          text-align: center;
+          color: #5141a5;
+          margin-top: 0;
+          margin-bottom: 10px;
+        }
+
+        .descricao {
+          text-align: center;
+          color: #77718e;
+          margin-bottom: 28px;
+          line-height: 1.5;
+        }
+
+        label {
+          display: block;
+          margin-bottom: 7px;
+          font-weight: bold;
+          color: #393354;
+        }
+
+        button {
+          display: block;
+          width: 100%;
+          padding: 13px;
+          background: linear-gradient(90deg, #6554c0, #8469d9);
+          color: white;
+          border: none;
+          border-radius: 10px;
+          font-size: 16px;
+          font-weight: bold;
+          cursor: pointer;
+          transition: 0.2s;
+        }
+
+        button:hover {
+          background: linear-gradient(90deg, #5140a5, #7054c4);
+          transform: translateY(-1px);
+        }
+
+        h2 {
+          color: #5141a5;
+          margin-top: 32px;
+          padding-bottom: 10px;
+          border-bottom: 2px solid #e9e4fb;
+        }
+
+        ol {
+          padding-left: 28px;
+        }
+
+        li {
+          background-color: #f4f1ff;
+          border-left: 4px solid #7964d8;
+          padding: 13px;
+          margin-bottom: 12px;
+          border-radius: 8px;
+          line-height: 1.5;
+          overflow-wrap: anywhere;
+        }
+
+        .titulo-radio {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+    </style>
+</head>
+<body>
+
+        <!-- Formulário -->
+
+        <div class="container">
+
+        <h1>🎬 Cadastro de Filmes</h1>
+
+        <p class="descricao">
+            Registre os filmes que você assistiu e suas avaliações!
+        </p>
+
+    <form id="formulario">
+        <label for="nomeFilme">Nome do filme:</label>
+        <input type="text" id="nomeFilme" placeholder="Ex: Jogos Vorazes" required>
+
+        <label for="genero">Gênero:</label>
+        <select id="genero" required>
+          <option value="">Selecione um gênero</option>
+          <option value="Ação">Ação</option>
+          <option value="Comédia">Comédia</option>
+          <option value="Terror">Terror</option>
+          <option value="Drama">Drama</option>
+          <option value="Animação">Animação</option>
+        </select>
+
+        <label for="nota">Nota de avaliação:</label>
+        <input type="number" id="nota" min="0" max="10" placeholder="Ex: 9" name="nota" required>
+
+        <label class="titulo-radio">Assistiria novamente?</label>
+
+      <div class="opcoes-radio">
+        <label for="sim">
+        <input type="radio" id="sim" name="assistiria" value="Sim" required>
+          Sim
+        </label>
+
+        <label for="nao">
+        <input type="radio" id="nao" name="assistiria" value="Não">
+          Não
+        </label>
+      </div>
+
+        <button type="submit">Cadastrar filme</button>
+    </form>
+
+    <h2>Filmes Cadastrados</h2>
+
+    <ol id="listaFilmes"></ol>
+
+    <script>
+        // Array para armazenar os filmes
+        let filmes = [];
+
+        const formulario = document.getElementById("formulario");
+        const lista = document.getElementById("listaFilmes");
+
+        formulario.addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            // Captura os valores
+            let nomeFilme = document.getElementById("nomeFilme").value;
+            let genero = document.getElementById("genero").value;
+            let nota = document.getElementById("nota").value;
+            let assistiria = document.querySelector('input[name="assistiria"]:checked')?.value;
+
+            // Cria o objeto filme
+            let filme = {
+                nome: nomeFilme,
+                genero: genero,
+                nota: nota,
+                assistiria: assistiria
+            };
+
+            // Adiciona ao array
+            filmes.push(filme);
+
+            // Cria um item na lista
+            let item = document.createElement("li");
+
+            item.textContent = nomeFilme + " - " + genero + " - Nota " + nota + " - " + assistiria;
+
+            // Adiciona o item na lista
+            lista.appendChild(item);
+
+            // Mostra o array no console
+            console.log(filmes);
+
+            // Limpa o formulário
+            formulario.reset();
+        });
+    </script>
+
+</body>
+</html>
